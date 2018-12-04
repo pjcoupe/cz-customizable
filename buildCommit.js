@@ -60,5 +60,9 @@ module.exports = function buildCommit(answers, config) {
     result += '\n\n' + footerPrefix + ' ' + footer;
   }
 
+  var reviewer = answers.reviewer? "** REVIEWED BY - " + wrap(answers.reviewer, wrapOptions) +" **" : "";
+  if (reviewer){
+    result += '\n\n' + reviewer;
+  }
   return escapeSpecialChars(result);
 };

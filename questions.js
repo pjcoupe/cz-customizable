@@ -18,6 +18,7 @@ module.exports = {
     var messages = config.messages || {};
 
     messages.type = messages.type || 'Select the type of change that you\'re committing:';
+    messages.reviewer = messages.reviewer || 'Who has (or is about to) reviewed your code';
     messages.scope = messages.scope || '\nDenote the SCOPE of this change (optional):';
     messages.customScope = messages.customScope || 'Denote the SCOPE of this change:';
     messages.subject = messages.subject || 'Write a SHORT, IMPERATIVE tense description of the change:\n';
@@ -35,9 +36,25 @@ module.exports = {
       },
       {
         type: 'list',
+        name: 'reviewer',
+        message: messages.reviewer,
+        choices: config.reviewers,
+        when: function(answers) {
+          console.log("PJC REMOVE when ", answers);
+          var typesForReview = config.typesForReview;          
+          if (answers.type && typesForReview.indexOf(answers.type) > -1){
+            return true;  
+          } else {
+            return false;
+          }
+        }
+      },
+      {
+        type: 'list',
         name: 'scope',
         message: messages.scope,
         choices: function(answers) {
+          
           var scopes = [];
           if (scopeOverrides[answers.type]) {
             scopes = scopes.concat(scopeOverrides[answers.type]);
